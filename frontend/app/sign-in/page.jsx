@@ -9,7 +9,7 @@ import ProtectedRoute from '../components/ProtectedRoute';
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [signInWithEmailAndPassword, loading, error] = useSignInWithEmailAndPassword(auth);
+  const [signInWithEmailAndPassword, user, loading, error] = useSignInWithEmailAndPassword(auth);
   const router = useRouter();
 
   const handleSignIn = async (e) => {
@@ -17,36 +17,35 @@ const SignIn = () => {
     try {
       const res = await signInWithEmailAndPassword(email, password);
       if (res) {
-        sessionStorage.setItem('user', true);
+        sessionStorage.setItem('user', JSON.stringify(res.user.uid)); // store uid instead of just true
         setEmail('');
         setPassword('');
         router.push('/');
       }
-    } catch (e) {
-      console.error(e);
+    } catch (err) {
+      console.error(err);
     }
   };
 
   return (
     <ProtectedRoute requireAuth={false}>
-      <div className="min-h-screen flex items-center justify-center bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="min-h-screen flex items-center justify-center bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
           <div>
-            <div className="mx-auto h-16 w-16 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg">
-              <span className="text-white font-bold text-2xl">HB</span>
+            <div className="mx-auto h-16 w-16 bg-white rounded-xl flex items-center justify-center shadow-lg">
+              <img src="/images/logo.jpg" alt="Logo" className="h-12 w-12 object-contain rounded-full" />
             </div>
-            <h2 className="mt-8 text-center text-3xl font-extrabold text-white">
-              Welcome back
+            <h2 className="mt-8 text-center text-3xl font-extrabold text-gray-900">
+              Hospital Readmissions Sign In
             </h2>
-            <p className="mt-2 text-center text-sm text-gray-400">
-              Sign in to your HealthBridge AI account
+            <p className="mt-2 text-center text-sm text-gray-600">
+              Sign in to continue
             </p>
           </div>
-          
           <form className="mt-8 space-y-6" onSubmit={handleSignIn}>
             <div className="space-y-4">
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
                   Email address
                 </label>
                 <input
@@ -57,12 +56,12 @@ const SignIn = () => {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="appearance-none relative block w-full px-4 py-3 border border-gray-600 placeholder-gray-400 text-white bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
+                  className="w-full p-3 rounded-lg outline-none bg-gray-100 text-gray-900 placeholder-gray-500 border border-gray-300"
                   placeholder="Enter your email"
                 />
               </div>
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
                   Password
                 </label>
                 <input
@@ -73,60 +72,30 @@ const SignIn = () => {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="appearance-none relative block w-full px-4 py-3 border border-gray-600 placeholder-gray-400 text-white bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
+                  className="w-full p-3 rounded-lg outline-none bg-gray-100 text-gray-900 placeholder-gray-500 border border-gray-300"
                   placeholder="Enter your password"
                 />
               </div>
             </div>
 
-            {error && (
-              <div className="bg-red-900/50 border border-red-500 text-red-200 px-4 py-3 rounded-lg text-sm">
-                {error.message}
-              </div>
-            )}
-
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <input
-                  id="remember-me"
-                  name="remember-me"
-                  type="checkbox"
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-600 rounded bg-gray-800"
-                />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-300">
-                  Remember me
-                </label>
-              </div>
-
-              <div className="text-sm">
-                <Link href="/forgot-password" className="font-medium text-blue-400 hover:text-blue-300 transition-colors duration-200">
-                  Forgot password?
-                </Link>
-              </div>
-            </div>
+            {/* Error & Loading */}
+            {error && <p className="text-red-500 text-sm mt-2">{error.message}</p>}
+            {loading && <p className="text-gray-500 text-sm mt-2">Signing in...</p>}
 
             <div>
               <button
                 type="submit"
-                disabled={loading}
-                className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg"
+                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700"
               >
-                {loading ? (
-                  <div className="flex items-center">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                    Signing in...
-                  </div>
-                ) : (
-                  'Sign in'
-                )}
+                Sign In
               </button>
             </div>
 
-            <div className="text-center">
-              <p className="text-sm text-gray-400">
-                Don't have an account?{' '}
-                <Link href="/sign-up" className="font-medium text-blue-400 hover:text-blue-300 transition-colors duration-200">
-                  Sign up here
+            <div className="text-center mt-4">
+              <p className="text-sm text-gray-600">
+                Don’t have an account?{' '}
+                <Link href="/signup" className="text-indigo-600 hover:text-indigo-500">
+                  Sign Up
                 </Link>
               </p>
             </div>
@@ -138,3 +107,4 @@ const SignIn = () => {
 };
 
 export default SignIn;
+  
