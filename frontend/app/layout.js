@@ -3,6 +3,7 @@ import "./globals.css";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Navbar from "./components/NavBar";
 import Footer from "./components/Footer";
+import ToastProvider from "./components/ToastProvider";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -25,10 +26,12 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-gray-900`}
       >
         <ErrorBoundary>
+          <ToastProvider/>
           <Navbar/>
           <main className="min-h-[80vh] bg-white px-2 md:px-0">
             {children}
           </main>
+          <Footer/>
         </ErrorBoundary>
       </body>
     </html>

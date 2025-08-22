@@ -1,32 +1,77 @@
 import React from 'react';
+import Link from 'next/link';
 
 const Footer = () => (
-    <footer className="bg-white rounded-lg shadow-sm border border-gray-200 m-4">
-        <div className="w-full max-w-screen-xl mx-auto p-4 md:py-8">
-            <div className="sm:flex sm:items-center sm:justify-between">
-                <a href="/" className="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse">
-                    <img src='/images/logo.jpg' className="h-8" alt="logo" />
-                    <span className="self-center text-2xl font-semibold whitespace-nowrap text-gray-800">Hospital Readmissions</span>
-                </a>
-                <ul className="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0">
-                    <li>
-                        <a href="#" className="hover:underline me-4 md:me-6">About</a>
-                    </li>
-                    <li>
-                        <a href="#" className="hover:underline me-4 md:me-6">Privacy Policy</a>
-                    </li>
-                    <li>
-                        <a href="#" className="hover:underline me-4 md:me-6">Licensing</a>
-                    </li>
-                    <li>
-                        <a href="#" className="hover:underline">Contact</a>
-                    </li>
-                </ul>
+  <footer className="bg-gradient-to-r from-blue-900 via-blue-800 to-indigo-900 text-white">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      {/* Main Footer Content */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        {/* Brand Section */}
+        <div className="col-span-1 md:col-span-2">
+          <div className="flex items-center space-x-3 mb-4">
+            <div className="bg-white p-2 rounded-xl shadow-lg">
+              <img src="/images/logo.jpg" className="h-12 w-12 object-cover rounded-lg" alt="Hospital Readmission Logo" />
             </div>
-            <hr className="my-6 border-gray-200 sm:mx-auto lg:my-8" />
-            <span className="block text-sm text-gray-500 sm:text-center">© 2023 Hospital Readmissions. All Rights Reserved.</span>
+            <div>
+              <h3 className="text-2xl font-bold text-white">Hospital Readmission</h3>
+              <p className="text-blue-200 text-sm">Modern Healthcare Analytics</p>
+            </div>
+          </div>
+          <p className="text-blue-100 text-sm leading-relaxed max-w-md">
+            Empowering healthcare providers with advanced analytics and predictive insights to reduce readmission rates and improve patient outcomes.
+          </p>
         </div>
-    </footer>
+
+        {/* Quick Links */}
+        <div>
+          <h4 className="text-lg font-semibold mb-4 text-white">Quick Links</h4>
+          <ul className="space-y-2">
+            <li>
+              <Link href="/dashboard" className="text-blue-200 hover:text-white transition-colors duration-200 text-sm">
+                Dashboard
+              </Link>
+            </li>
+            <li>
+              <Link href="/about" className="text-blue-200 hover:text-white transition-colors duration-200 text-sm">
+                About Us
+              </Link>
+            </li>
+            <li>
+              <Link href="/sign-in" className="text-blue-200 hover:text-white transition-colors duration-200 text-sm">
+                Sign In
+              </Link>
+            </li>
+            <li>
+              <Link href="/sign-up" className="text-blue-200 hover:text-white transition-colors duration-200 text-sm">
+                Sign Up
+              </Link>
+            </li>
+          </ul>
+        </div>
+
+        {/* Contact Info */}
+        <div>
+          <h4 className="text-lg font-semibold mb-4 text-white">Contact</h4>
+          <div className="space-y-2 text-sm text-blue-200">
+            <p>📧 info@hospitalreadmission.com</p>
+            <p>📞 +1 (555) 123-4567</p>
+            <p>📍 Healthcare District, Medical City</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom Bar */}
+      <div className="border-t border-blue-700 pt-8">
+        <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+          <div className="flex items-center space-x-2 text-blue-200 text-sm">
+            <span>© {new Date().getFullYear()} Hospital Readmission. All rights reserved.</span>
+          </div>
+          
+          {/*  */}
+        </div>
+      </div>
+    </div>
+  </footer>
 );
 
 export default Footer;

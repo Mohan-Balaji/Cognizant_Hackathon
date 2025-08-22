@@ -48,6 +48,7 @@ backend/.ipynb_checkpoints
 backend/.env*
 
 # Common
+.venv/
 .DS_Store
 Thumbs.db
 ehthumbs.db
