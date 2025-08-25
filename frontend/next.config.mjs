@@ -16,6 +16,8 @@ const nextConfig = {
   experimental: {
     esmExternals: false,
   },
+  // Ensure no server-side features are used
+  distDir: 'out',
   // Handle environment variables for static export
   env: {
     NEXT_PUBLIC_FIREBASE_API_KEY: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || 'placeholder',
