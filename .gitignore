@@ -54,10 +54,11 @@ Thumbs.db
 ehthumbs.db
 Desktop.ini
 *.log
-.vscode/
+
 .idea/
 *.sublime-workspace
 *.sublime-project
 *.swp
 *.bak
 *.tmp
+.python_packages
