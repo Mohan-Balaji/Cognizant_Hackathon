@@ -31,22 +31,56 @@ jobs:
           cache: 'npm'
           cache-dependency-path: 'frontend/package-lock.json'
 
-      - name: Install dependencies
+      - name: Clean up lockfiles
         working-directory: frontend
         run: |
-          # For Tailwind CSS v4 compatibility, use npm install instead of ci
-          # to ensure native binaries are properly built for the platform
+          # Remove any conflicting lockfiles
+          rm -f ../package-lock.json
+          echo "Cleaned up root lockfile"
+
+      - name: Temporarily use Tailwind CSS v3 for stable build
+        working-directory: frontend
+        run: |
+          # Remove problematic Tailwind v4 packages
+          npm uninstall @tailwindcss/postcss tailwindcss
+          
+          # Install stable Tailwind v3
+          npm install --save-dev tailwindcss@^3.4.0 postcss@^8.4.0 autoprefixer@^10.4.0
+          
+          # Install remaining dependencies
           npm install
 
-      - name: Verify native dependencies
+      - name: Create Tailwind config for v3
         working-directory: frontend
         run: |
-          # Verify lightningcss native binary exists
-          if [ -f node_modules/lightningcss/lightningcss.linux-x64-gnu.node ]; then
-            echo "✅ lightningcss native binary found"
-          else
-            echo "❌ lightningcss native binary missing, attempting rebuild..."
-            npm rebuild lightningcss || npm install --force lightningcss
+          # Create a basic tailwind.config.js if it doesn't exist
+          if [ ! -f tailwind.config.js ]; then
+            cat > tailwind.config.js << 'EOF'
+          /** @type {import('tailwindcss').Config} */
+          module.exports = {
+            content: [
+              './pages/**/*.{js,ts,jsx,tsx,mdx}',
+              './components/**/*.{js,ts,jsx,tsx,mdx}',
+              './app/**/*.{js,ts,jsx,tsx,mdx}',
+            ],
+            theme: {
+              extend: {},
+            },
+            plugins: [],
+          }
+          EOF
+          fi
+          
+          # Create postcss.config.js if it doesn't exist
+          if [ ! -f postcss.config.js ]; then
+            cat > postcss.config.js << 'EOF'
+          module.exports = {
+            plugins: {
+              tailwindcss: {},
+              autoprefixer: {},
+            },
+          }
+          EOF
           fi
 
       # - name: Run tests (if test script exists)
