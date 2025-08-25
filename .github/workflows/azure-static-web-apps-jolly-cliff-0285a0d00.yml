@@ -33,7 +33,21 @@ jobs:
 
       - name: Install dependencies
         working-directory: frontend
-        run: npm ci
+        run: |
+          # For Tailwind CSS v4 compatibility, use npm install instead of ci
+          # to ensure native binaries are properly built for the platform
+          npm install
+
+      - name: Verify native dependencies
+        working-directory: frontend
+        run: |
+          # Verify lightningcss native binary exists
+          if [ -f node_modules/lightningcss/lightningcss.linux-x64-gnu.node ]; then
+            echo "✅ lightningcss native binary found"
+          else
+            echo "❌ lightningcss native binary missing, attempting rebuild..."
+            npm rebuild lightningcss || npm install --force lightningcss
+          fi
 
       # - name: Run tests (if test script exists)
       #   working-directory: ./frontend
