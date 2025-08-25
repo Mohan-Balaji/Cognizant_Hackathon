@@ -33,7 +33,11 @@ jobs:
 
       - name: Install dependencies
         working-directory: frontend
-        run: npm ci
+        run: |
+          # Ensure xlsx is installed
+          npm ci || npm install
+          # Verify xlsx package is available
+          npm list xlsx || npm install xlsx
 
       # - name: Run tests (if test script exists)
       #   working-directory: frontend
@@ -54,7 +58,10 @@ jobs:
           NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID }}
           NEXT_PUBLIC_FIREBASE_APP_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}
           NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
-        run: npm run build
+        run: |
+          echo "Building Next.js application..."
+          npm run build
+          echo "Build completed successfully"
 
       - name: Get OIDC token
         uses: actions/github-script@v7

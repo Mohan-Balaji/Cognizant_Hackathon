@@ -38,17 +38,19 @@ jobs:
           echo "$(pwd)/venv/bin" >> $GITHUB_PATH
 
       - name: Install dependencies
+        working-directory: backend
         run: |
-          source venv/bin/activate
+          source ../venv/bin/activate
           python -m pip install --upgrade pip
-          pip install -r backend/requirements.txt
+          pip install -r requirements.txt
 
       # Optional: Add step to run tests
       - name: Run tests (if you have them)
+        working-directory: backend
         run: |
-          source venv/bin/activate
+          source ../venv/bin/activate
           # Add your test commands here
-          # python -m pytest backend/tests/
+          # python -m pytest tests/
         continue-on-error: true
 
       # No packaging step needed; deploy backend/ directly
@@ -94,4 +96,3 @@ jobs:
         run: |
           echo "Deployment completed successfully!"
           echo "App URL: https://healthcare-prediction-api-dzexehhba3ceccf4.southindia-01.azurewebsites.net"
-          

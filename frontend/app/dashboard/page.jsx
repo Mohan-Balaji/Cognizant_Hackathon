@@ -65,9 +65,11 @@ export default function Dashboard() {
     };
   }, []);
 
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+
   const checkBackendStatus = async () => {
     try {
-      const response = await fetch('http://localhost:5000/health');
+      const response = await fetch(`${API_URL}/health`);
       if (response.ok) {
         setBackendStatus('connected');
       } else {
@@ -156,7 +158,7 @@ export default function Dashboard() {
         setUploadProgress(prev => Math.min(prev + 10, 90));
       }, 200);
 
-      const response = await fetch('http://localhost:5000/upload_predict', {
+      const response = await fetch(`${API_URL}/upload_predict`, {
         method: 'POST',
         body: formData,
       });
