@@ -51,20 +51,13 @@ jobs:
           # python -m pytest backend/tests/
         continue-on-error: true
 
-      - name: Prepare deployment package
-        run: |
-          # Copy backend files to deployment directory
-          mkdir -p deployment
-          cp -r backend/* deployment/
-          # Copy virtual environment dependencies to deployment
-          source venv/bin/activate
-          pip freeze > deployment/requirements.txt
+      # No packaging step needed; deploy backend/ directly
 
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v4
         with:
           name: python-app
-          path: deployment/
+          path: backend/
           retention-days: 1
 
   deploy:
@@ -80,7 +73,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: python-app
-          path: ./deployment
+          path: backend
 
       - name: Login to Azure
         uses: azure/login@v2
@@ -95,7 +88,7 @@ jobs:
         with:
           app-name: 'healthcare-prediction-api'
           slot-name: 'Production'
-          package: './deployment'
+          package: 'backend'
 
       - name: Verify deployment
         run: |
